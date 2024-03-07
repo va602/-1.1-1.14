@@ -1,0 +1,87 @@
+# HTML:
+
+<!-- Фрагмент со списком постов -->
+<template id="post-list">
+  <ul>
+    <li v-for="post in posts" :key="post.id" @click="showPostDetails(post)">
+      {{ post.title }}
+    </li>
+  </ul>
+</template>
+
+<!-- Фрагмент с деталями поста -->
+<template id="post-details">
+  <div>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <button @click="editPost">Изменить</button>
+    <button @click="deletePost">Удалить</button>
+    <button @click="backToList">Назад</button>
+  </div>
+</template>
+# JavaScript:
+
+const PostList = {
+  template: '#post-list',
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  created() {
+    this.fetchPosts();
+  },
+  methods: {
+    fetchPosts() {
+      // Загрузить посты из репозитория
+    },
+    showPostDetails(post) {
+      this.$router.push({ name: 'post-details', params: { id: post.id } });
+    },
+  },
+};
+
+const PostDetails = {
+  template: '#post-details',
+  data() {
+    return {
+      post: null,
+    };
+  },
+  created() {
+    const id = this.$route.params.id;
+    this.fetchPost(id);
+  },
+  methods: {
+    fetchPost(id) {
+      // Загрузить пост из репозитория
+    },
+    editPost() {
+      this.$router.push({ name: 'edit-post', params: { id: this.post.id } });
+    },
+    deletePost() {
+      // Удалить пост из репозитория
+      this.$router.push({ name: 'post-list' });
+    },
+    backToList() {
+      this.$router.push({ name: 'post-list' });
+    },
+  },
+};
+
+const router = new VueRouter({
+  routes: [
+    { path: '/', name: 'post-list', component: PostList },
+    { path: '/post/:id', name: 'post-details', component: PostDetails },
+  ],
+});
+
+const app = new Vue({
+  router,
+}).$mount('#app');
+# CSS:
+
+.post-details {
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+}
