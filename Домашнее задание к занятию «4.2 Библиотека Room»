@@ -1,0 +1,64 @@
+# Создание базы данных Room:
+
+# Post.kt
+
+@Entity
+data class Post(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val title: String,
+    val content: String
+)
+# PostDatabase.kt
+
+@Database(entities = [Post::class], version = 1)
+abstract class PostDatabase : RoomDatabase() {
+    abstract fun postDao(): PostDao
+}
+# PostDao.kt
+
+@Dao
+interface PostDao {
+    @Query("SELECT * FROM Post")
+    fun getAll(): List<Post>
+
+    @Insert
+    fun insert(post: Post)
+
+    @Update
+    fun update(post: Post)
+
+    @Delete
+    fun delete(post: Post)
+}
+# Миграция данных из старой базы данных в Room:
+
+val db = Room.databaseBuilder(
+    applicationContext,
+    PostDatabase::class.java, "posts.db"
+).build()
+
+val oldConn = ...  // Установите соединение со старой базой данных
+val oldCursor = oldConn.rawQuery("SELECT * FROM posts", null)
+
+while (oldCursor.moveToNext()) {
+    val id = oldCursor.getInt(0)
+    val title = oldCursor.getString(1)
+    val content = oldCursor.getString(2)
+
+    val post = Post(id, title, content)
+    db.postDao().insert(post)
+}
+
+oldCursor.close()
+oldConn.close()
+# Обновление кода приложения для использования Room:
+
+val db = Room.databaseBuilder(
+    applicationContext,
+    PostDatabase::class.java, "posts.db"
+).build()
+
+val posts = db.postDao().getAll()
+
+// Использовать данные в приложении
+...
