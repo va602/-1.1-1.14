@@ -1,0 +1,30 @@
+# Если в приложение придёт Notification, у которого поле action не соответствует ни одному значению из перечисления Action, то будет выброшено исключение IllegalArgumentException.
+
+# Код:
+
+public class NotificationHandler {
+
+    public void handleNotification(Notification notification) {
+        Action action = notification.getAction();
+
+        switch (action) {
+            case VIEW:
+                // Обработать действие VIEW
+                break;
+            case EDIT:
+                // Обработать действие EDIT
+                break;
+            case DELETE:
+                // Обработать действие DELETE
+                break;
+            default:
+                // Выбросить исключение, если действие не распознано
+                throw new IllegalArgumentException("Неизвестное действие: " + action);
+        }
+    }
+}
+# Пример вывода:
+
+java.lang.IllegalArgumentException: Неизвестное действие: UNKNOWN
+    at NotificationHandler.handleNotification(NotificationHandler.java:16)
+    at ...
