@@ -1,0 +1,25 @@
+<!-- styles.xml -->
+<style name="CustomButtonStyle">
+    <item name="android:background">@drawable/custom_button_background</item>
+    <item name="android:textColor">@color/custom_button_text_color</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:padding">8dp</item>
+</style>
+
+<!-- activity_main.xml -->
+<Button
+    android:id="@+id/share_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Share"
+    android:drawableLeft="@drawable/ic_share"
+    style="@style/CustomButtonStyle" />
+
+<Button
+    android:id="@+id/options_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Options"
+    android:drawableLeft="@drawable/ic_options"
+    style="@style/CustomButtonStyle" />
+# В этом примере мы создали стиль CustomButtonStyle, который определяет внешний вид наших кнопок. Затем мы применили этот стиль к кнопкам share_button и options_button. Обратите внимание, что мы также задали текст и значки для кнопок с помощью атрибутов android:text и android:drawableLeft.
