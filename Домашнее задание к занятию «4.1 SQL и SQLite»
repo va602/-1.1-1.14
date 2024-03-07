@@ -1,0 +1,43 @@
+# Создание базы данных SQLite:
+
+CREATE TABLE posts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT,
+  content TEXT
+);
+# Миграция данных из старой базы данных в SQLite:
+
+import sqlite3
+
+# Установить соединение с новой базой данных SQLite
+conn = sqlite3.connect('posts.db')
+c = conn.cursor()
+
+# Получить данные из старой базы данных
+old_conn = ...  # Установите соединение со старой базой данных
+old_c = old_conn.cursor()
+old_c.execute('SELECT * FROM posts')
+old_data = old_c.fetchall()
+
+# Вставить данные в новую базу данных SQLite
+for row in old_data:
+    c.execute('INSERT INTO posts (title, content) VALUES (?, ?)', row)
+
+# Сохранить изменения
+conn.commit()
+Обновление кода приложения для использования SQLite:
+
+import sqlite3
+
+# Установить соединение с базой данных SQLite
+conn = sqlite3.connect('posts.db')
+c = conn.cursor()
+
+# Выполнить запрос к базе данных
+c.execute('SELECT * FROM posts')
+
+# Получить результаты запроса
+posts = c.fetchall()
+
+# Использовать данные в приложении
+...
