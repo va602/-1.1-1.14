@@ -1,0 +1,48 @@
+# Шаги выполнения:
+
+# 1. Создайте новый проект в Android Studio:
+
+# -Откройте Android Studio и выберите "Create New Project".
+# -Введите имя приложения "NMedia" и идентификатор пакета "ru.netology.nmedia".
+# -Выберите "Empty Activity" и нажмите "Next".
+# -Настройте минимальную версию SDK на 23 (Android 6.0) и нажмите "Finish".
+# 2. Измените содержимое файла activity_main.xml:
+
+# -Откройте файл res/layout/activity_main.xml.
+# -Замените содержимое файла следующим кодом:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NMedia!"
+        android:textSize="30sp" />
+
+</LinearLayout>
+# 3. Настройте GitHub Actions:
+# -Создайте репозиторий на GitHub и клонируйте его локально.
+# -Перейдите в файл .github/workflows/main.yml и замените содержимое следующим кодом:
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - run: ./gradlew build
