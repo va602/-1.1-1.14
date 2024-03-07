@@ -1,0 +1,76 @@
+# Создание отдельного Activity для редактирования
+
+// EditPostActivity.kt
+
+class EditPostActivity : AppCompatActivity() {
+
+    private lateinit var post: Post
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_edit_post)
+
+        val postId = intent.getLongExtra("postId", -1)
+        if (postId == -1L) {
+            finish()
+            return
+        }
+
+        post = Post.findById(postId)
+
+        val titleEditText = findViewById<EditText>(R.id.titleEditText)
+        val bodyEditText = findViewById<EditText>(R.id.bodyEditText)
+
+        titleEditText.setText(post.title)
+        bodyEditText.setText(post.body)
+
+        val saveButton = findViewById<Button>(R.id.saveButton)
+        saveButton.setOnClickListener {
+            post.title = titleEditText.text.toString()
+            post.body = bodyEditText.text.toString()
+            post.save()
+            finish()
+        }
+    }
+}
+# Совмещение создания и редактирования в одной Activity
+
+// PostActivity.kt
+
+class PostActivity : AppCompatActivity() {
+
+    private var isEditing = false
+    private var post: Post? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_post)
+
+        val postId = intent.getLongExtra("postId", -1)
+        if (postId != -1L) {
+            isEditing = true
+            post = Post.findById(postId)
+        }
+
+        val titleEditText = findViewById<EditText>(R.id.titleEditText)
+        val bodyEditText = findViewById<EditText>(R.id.bodyEditText)
+
+        if (isEditing) {
+            titleEditText.setText(post!!.title)
+            bodyEditText.setText(post!!.body)
+        }
+
+        val saveButton = findViewById<Button>(R.id.saveButton)
+        saveButton.setOnClickListener {
+            if (isEditing) {
+                post!!.title = titleEditText.text.toString()
+                post!!.body = bodyEditText.text.toString()
+                post!!.save()
+            } else {
+                val newPost = Post(titleEditText.text.toString(), bodyEditText.text.toString())
+                newPost.save()
+            }
+            finish()
+        }
+    }
+}
