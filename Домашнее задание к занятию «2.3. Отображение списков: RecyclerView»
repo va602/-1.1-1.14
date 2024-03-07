@@ -1,0 +1,69 @@
+# RecyclerViewAdapter:
+
+class PostListAdapter(
+    private val onLikeListener: (Int) -> Unit,
+    private val onShareListener: (Int) -> Unit
+) : ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        val binding = FragmentPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PostViewHolder(binding, onLikeListener, onShareListener)
+    }
+
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+}
+# PostViewHolder:
+
+class PostViewHolder(
+    private val binding: FragmentPostBinding,
+    private val onLikeListener: (Int) -> Unit,
+    private val onShareListener: (Int) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(post: Post) {
+        binding.post = post
+
+        binding.likeButton.setOnClickListener {
+            onLikeListener(post.id)
+        }
+
+        binding.shareButton.setOnClickListener {
+            onShareListener(post.id)
+        }
+    }
+}
+# Fragment:
+
+class PostFragment : Fragment() {
+
+    private val viewModel: PostViewModel by viewModels()
+    private val postListAdapter: PostListAdapter by lazy {
+        PostListAdapter(::onLikeClicked, ::onShareClicked)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentPostBinding.inflate(inflater, container, false)
+
+        binding.viewModel = viewModel
+        binding.recyclerView.adapter = postListAdapter
+
+        return binding.root
+    }
+
+    private fun onLikeClicked(postId: Int) {
+        viewModel.onLikeClicked(postId)
+    }
+
+    private fun onShareClicked(postId: Int) {
+        viewModel.onShareClicked(postId)
+    }
+}
+# Результат:
+
+# Данная реализация добавляет отображение списка постов с помощью RecyclerView и ListAdapter. Она также включает слушатели для событий лайка и шера, которые передаются в адаптер и вызываются при нажатии соответствующих кнопок. Это позволяет легко обрабатывать события лайка и шера для каждого отдельного поста в списке.
