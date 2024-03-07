@@ -1,0 +1,29 @@
+<LinearLayout
+    android:id="@+id/views_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="end">
+
+    <ImageView
+        android:id="@+id/views_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_visibility_24"
+        android:tint="@color/colorTextSecondary" />
+
+    <TextView
+        android:id="@+id/views_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:textSize="12sp"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginStart="4dp" />
+
+</LinearLayout>
+# Примечание:
+
+# Мы добавили android:layout_gravity="end" в контейнер LinearLayout, чтобы выровнять его по правому краю.
+# Мы установили фиксированное расстояние между текстом и границей родителя с помощью android:layout_marginStart="4dp".
+# Мы приклеили иконку к границе текста, установив android:layout_width="wrap_content" для ImageView.
