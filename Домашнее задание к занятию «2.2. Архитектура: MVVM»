@@ -1,0 +1,97 @@
+# ViewModel:
+
+class PostViewModel : ViewModel() {
+
+    private val _likes = MutableLiveData<Int>()
+    val likes: LiveData<Int> = _likes
+
+    private val _shares = MutableLiveData<Int>()
+    val shares: LiveData<Int> = _shares
+
+    fun onLikeClicked() {
+        _likes.value = _likes.value?.plus(1)
+    }
+
+    fun onShareClicked() {
+        _shares.value = _shares.value?.plus(1)
+    }
+}
+# Fragment:
+
+class PostFragment : Fragment() {
+
+    private val viewModel: PostViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentPostBinding.inflate(inflater, container, false)
+
+        binding.viewModel = viewModel
+
+        binding.likeButton.setOnClickListener {
+            viewModel.onLikeClicked()
+        }
+
+        binding.shareButton.setOnClickListener {
+            viewModel.onShareClicked()
+        }
+
+        return binding.root
+    }
+}
+# XML-разметка:
+
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.mvvmpost.PostViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(viewModel.likes)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Like"
+            app:layout_constraintStart_toEndOf="@+id/likes"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/shares"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(viewModel.shares)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/likes" />
+
+        <Button
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            app:layout_constraintStart_toEndOf="@+id/shares"
+            app:layout_constraintTop_toBottomOf="@+id/likes" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+# Результат:
+
+# Данная реализация на MVVM сохраняет функциональность предыдущей реализации, включая увеличение количества лайков, шеров и отображение значения 1K. Однако, в отличие от предыдущей реализации, она разделяет логику представления (ViewModel) и логику пользовательского интерфейса (Fragment), что делает код более тестируемым и поддерживаемым.
